@@ -30,19 +30,17 @@ document.addEventListener('DOMContentLoaded', function(){
     var timerStarted = false;
     var settingsOn = false;
 
-    var startGame = function(size = 14, dontStartTimer) {
+    var startGame = function(size = 14,nMines = 14) {
         document.getElementById('game-container').style.display = "block";
         document.getElementById('settings-container').style.display = "none";
         settingsOn = false;
         if (size ) {
             gridSize = size;
         }
-        console.log('starting', gridSize, dontStartTimer)
         bombs = [];
-        if (!dontStartTimer) {
-            timerCount = 0;
-            moves = 0;
-        }
+        timerCount = 0;
+        ticker.stop()
+        moves = 0;
         openedCells = [];
         timerStarted = false;
         document.getElementById("moves-value").innerHTML = 0;
@@ -51,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function(){
         document.getElementById("time-value").innerHTML = "0:00";
         container.innerHTML = "";
 
-        while(bombs.length < gridSize ** 1){
+        while(bombs.length < gridSize ** 1.3){
             var rand = Math.ceil(Math.random() * (gridSize **2))
             if(bombs.indexOf(rand) < 0){
                 bombs.push(rand)
@@ -314,9 +312,9 @@ document.addEventListener('DOMContentLoaded', function(){
             document.getElementById('settings-container').style.display = "none";
             settingsOn = false;
         }
-        document.getElementById('easy').addEventListener('click', () => startGame(7, true) )
-        document.getElementById('medium').addEventListener('click', () => startGame(14, true) )
-        document.getElementById('hard').addEventListener('click', () => startGame(19, true) )
+        document.getElementById('easy').addEventListener('click', () => startGame(7, true))
+        document.getElementById('medium').addEventListener('click', () => startGame(14, true))
+        document.getElementById('hard').addEventListener('click', () => startGame(19, true))
     }
     
     startGame();
@@ -341,7 +339,6 @@ function AdjustingInterval(workFunc, interval, errorFunc) {
     function step() {
         var drift = Date.now() - expected;
         if (drift > that.interval) {
-            // You could have some default stuff here too...
             if (errorFunc) errorFunc();
         }
         workFunc();
