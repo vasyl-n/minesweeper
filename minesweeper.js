@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function(){
     var timerStarted = false;
     var settingsOn = false;
 
-    var startGame = function(size = 14,nMines = 14) {
+    var startGame = function(size = 14, nMines = 40) {
         document.getElementById('game-container').style.display = "block";
         document.getElementById('settings-container').style.display = "none";
         settingsOn = false;
@@ -48,8 +48,9 @@ document.addEventListener('DOMContentLoaded', function(){
         document.getElementById('face-img').setAttribute("src", "happy.png")
         document.getElementById("time-value").innerHTML = "0:00";
         container.innerHTML = "";
+        
 
-        while(bombs.length < gridSize ** 1.3){
+        while(bombs.length < nMines){
             var rand = Math.ceil(Math.random() * (gridSize **2))
             if(bombs.indexOf(rand) < 0){
                 bombs.push(rand)
@@ -322,9 +323,9 @@ document.addEventListener('DOMContentLoaded', function(){
             document.getElementById('settings-container').style.display = "none";
             settingsOn = false;
         }
-        document.getElementById('easy').addEventListener('click', () => startGame(7, true))
-        document.getElementById('medium').addEventListener('click', () => startGame(14, true))
-        document.getElementById('hard').addEventListener('click', () => startGame(19, true))
+        document.getElementById('easy').addEventListener('click', () => startGame(7, 15))
+        document.getElementById('medium').addEventListener('click', () => startGame(14, 40))
+        document.getElementById('hard').addEventListener('click', () => startGame(19, 80))
     }
     
     startGame();
