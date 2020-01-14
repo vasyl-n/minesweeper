@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function(){
         document.getElementById('game-container').style.display = "block";
         document.getElementById('settings-container').style.display = "none";
         settingsOn = false;
-        if (size ) {
+        if (size) {
             gridSize = size;
         }
         bombs = [];
@@ -276,14 +276,24 @@ document.addEventListener('DOMContentLoaded', function(){
             document.getElementById('face-img').addEventListener('click', () => startGame(gridSize))
 
             var cells = document.getElementsByClassName("cell");
-            for (var i = 0; i < cells.length; i++) {
-                cells[i].removeEventListener('click', game);
-            }
-
-            for(i = 0; i < bombs.length; i++){
-                var bo = document.getElementById(bombs[i])
-                bo.innerHTML = "<img class='mine' src='mine.png'>"
-                event.target.style.background = openCellBackgroundColor;
+            for (var i = 1; i <= cells.length; i++) {
+                cells[i - 1].removeEventListener('click', game);
+                var cell = document.getElementById(i)
+                if (bombs.indexOf(i) > 0) {
+                    cell.innerHTML = "<img class='mine' src='mine.png'>"
+                    cell.style.background = openCellBackgroundColor;
+                } else {    
+                    console.log(i)
+                    var bCount = bombCount(i)
+                    if(bCount !== 0){
+                        cell.innerHTML = bCount
+                        cell.style.background = openCellBackgroundColor;
+                    }
+                    if(bCount === 0){
+                        cell.style.background = openCellBackgroundColor;
+                        showOtherZeros(i)
+                    }
+                }
             }
         }
         else {
