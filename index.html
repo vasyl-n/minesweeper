@@ -38,18 +38,31 @@
             display: flex;
             justify-content: space-between;
         }
+        #face-img {
+            width: 30px;
+        }
+        .image-container {
+            background: white;
+            justify-content: center;
+            display: flex;
+            margin-top: 2px;
+            margin-bottom: 7px;
+        }
     </style>
 </head>
 <body>
     <h2>Sweep the mines!</h2>
     <div id="container">
+        <div class="image-container">
+            <img id="face-img" src="happy.png"/>
+        </div>
         <div id="game-container"></div>
         <div id="info">
             <div id="moves-container">
                 <div id="moves-text">Moves</div><div id="moves-value">0</div>
             </div>
             <div id="time-container">
-                <div id="time-text">Time</div><div id="time-value"></div>
+                <div id="time-text">Time</div><div id="time-value">0:00</div>
             </div>
         </div>
     </div>

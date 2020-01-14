@@ -17,7 +17,7 @@ const config = [
 ]
 let moves = 0;
 
-const openCellBackgroundColor = "linear-gradient(45deg, black, transparent)";
+const openCellBackgroundColor = "gray";
 
 document.addEventListener('DOMContentLoaded', function(){
     
@@ -267,7 +267,7 @@ var timerStarted = false;
         document.getElementById("moves-value").innerHTML = ++moves;
         if(isBomb(id)){
             ticker.stop();
-            console.log("loooser")
+            document.getElementById('face-img').setAttribute("src", "sad.png")
             document.getElementById('game-container').removeEventListener('click', game);
             for(i = 0; i < bombs.length; i++){
                 var bo = document.getElementById(bombs[i])
