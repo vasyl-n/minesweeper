@@ -26,10 +26,17 @@ document.addEventListener('DOMContentLoaded', function(){
     var bombs = [];
     var openedCells = []
     var timerCount = 0;
-    var ticker = new AdjustingInterval(doWork, 10);
+    var ticker = new AdjustingInterval(getTime, 10);
     var timerStarted = false;
     var settingsOn = false;
 
+    var gearAnimationTimer = new AdjustingInterval(rotateGear, 100);
+    var gearAngle = 0
+    function rotateGear() {
+        gearAngle += 2
+        document.getElementById('gear-img').style.transform = `rotate(${gearAngle}deg)`;
+    }
+    gearAnimationTimer.start()
     var startGame = function(size = 14, nMines = 40) {
         document.getElementById('game-container').style.display = "block";
         document.getElementById('settings-container').style.display = "none";
@@ -256,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function(){
         }
     }
 
-    function doWork() {
+    function getTime() {
         let num = timerCount++
         num = num.toString();
         const splited = num.split('')
