@@ -235,31 +235,7 @@ document.addEventListener('DOMContentLoaded', function(){
         }
     }
 
-    function AdjustingInterval(workFunc, interval, errorFunc) {
-        var that = this;
-        var expected, timeout;
-        this.interval = interval;
-    
-        this.start = function() {
-            expected = Date.now() + this.interval;
-            timeout = setTimeout(step, this.interval);
-        }
-    
-        this.stop = function() {
-            clearTimeout(timeout);
-        }
-    
-        function step() {
-            var drift = Date.now() - expected;
-            if (drift > that.interval) {
-                // You could have some default stuff here too...
-                if (errorFunc) errorFunc();
-            }
-            workFunc();
-            expected += that.interval;
-            timeout = setTimeout(step, Math.max(0, that.interval-drift));
-        }
-    }
+
 
 // For testing purposes, we'll just increment
 // this and send it out to the console.
@@ -285,7 +261,7 @@ var doError = function() {
 
 // (The third argument is optional)
 var ticker = new AdjustingInterval(doWork, 10, doError);
-
+var timerStarted = false;
     function game(event){
         var id = parseInt(event.target.getAttribute('id'));
         document.getElementById("moves-value").innerHTML = ++moves;
@@ -301,7 +277,10 @@ var ticker = new AdjustingInterval(doWork, 10, doError);
             }
         }
         else {
-            ticker.start();
+            if (!timerStarted) {
+                ticker.start();
+                timerStarted = true;
+            }
             var bCount = bombCount(id)
             if(bCount !== 0){
                 event.target.innerHTML = bCount
@@ -317,3 +296,29 @@ var ticker = new AdjustingInterval(doWork, 10, doError);
     document.getElementById('game-container').addEventListener('click', game)
     
 })
+
+function AdjustingInterval(workFunc, interval, errorFunc) {
+    var that = this;
+    var expected, timeout;
+    this.interval = interval;
+
+    this.start = function() {
+        expected = Date.now() + this.interval;
+        timeout = setTimeout(step, this.interval);
+    }
+
+    this.stop = function() {
+        clearTimeout(timeout);
+    }
+
+    function step() {
+        var drift = Date.now() - expected;
+        if (drift > that.interval) {
+            // You could have some default stuff here too...
+            if (errorFunc) errorFunc();
+        }
+        workFunc();
+        expected += that.interval;
+        timeout = setTimeout(step, Math.max(0, that.interval-drift));
+    }
+}
