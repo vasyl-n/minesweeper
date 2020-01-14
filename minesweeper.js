@@ -284,7 +284,6 @@ document.addEventListener('DOMContentLoaded', function(){
                     cell.innerHTML = "<img class='mine' src='mine.png'>"
                     cell.style.background = openCellBackgroundColor;
                 } else {    
-                    console.log(i)
                     var bCount = bombCount(i)
                     if(bCount !== 0){
                         cell.innerHTML = bCount
