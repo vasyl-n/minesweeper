@@ -21,19 +21,29 @@ const openCellBackgroundColor = "gray";
 
 document.addEventListener('DOMContentLoaded', function(){
     
-    var gridSize = 17;
+    var gridSize;
     var container = document.getElementById('game-container');
     var bombs = [];
     var openedCells = []
     var timerCount = 0;
     var ticker = new AdjustingInterval(doWork, 10);
     var timerStarted = false;
+    var settingsOn = false;
 
-    var startGame = function() {
+    var startGame = function(size = 14, dontStartTimer) {
+        document.getElementById('game-container').style.display = "block";
+        document.getElementById('settings-container').style.display = "none";
+        settingsOn = false;
+        if (size ) {
+            gridSize = size;
+        }
+        console.log('starting', gridSize, dontStartTimer)
         bombs = [];
-        moves = 0;
+        if (!dontStartTimer) {
+            timerCount = 0;
+            moves = 0;
+        }
         openedCells = [];
-        timerCount = 0;
         timerStarted = false;
         document.getElementById("moves-value").innerHTML = 0;
         document.getElementById('face-img').removeEventListener('click', startGame);
@@ -265,7 +275,7 @@ document.addEventListener('DOMContentLoaded', function(){
         if(isBomb(id)){
             ticker.stop();
             document.getElementById('face-img').setAttribute("src", "sad.png")
-            document.getElementById('face-img').addEventListener('click', startGame)
+            document.getElementById('face-img').addEventListener('click', () => startGame(gridSize))
 
             var cells = document.getElementsByClassName("cell");
             for (var i = 0; i < cells.length; i++) {
@@ -293,8 +303,24 @@ document.addEventListener('DOMContentLoaded', function(){
             }
         }
     }
+
+    function showSettings() {
+        if(!settingsOn) {
+            document.getElementById('game-container').style.display = "none";
+            document.getElementById('settings-container').style.display = "block";
+            settingsOn = true;
+        } else {   
+            document.getElementById('game-container').style.display = "block";
+            document.getElementById('settings-container').style.display = "none";
+            settingsOn = false;
+        }
+        document.getElementById('easy').addEventListener('click', () => startGame(7, true) )
+        document.getElementById('medium').addEventListener('click', () => startGame(14, true) )
+        document.getElementById('hard').addEventListener('click', () => startGame(19, true) )
+    }
     
     startGame();
+    document.getElementById('gear-img').addEventListener('click', showSettings)
     
 })
 

@@ -1,7 +1,7 @@
 <!DOCType html>
 <head>
     <style>
-        h2 {
+        h2,h3 {
             text-align: center;
             font-family: sans-serif;
         }
@@ -53,8 +53,9 @@
             margin-top: 2px;
             margin-bottom: 7px;
             margin: 2px 40px 7px 40px;
+            position: relative;
         }
-        .image-container:hover {
+        #face-img:hover {
             cursor: pointer;
         }
         #moves-container {
@@ -63,6 +64,31 @@
         #time-container {
             text-align: center;
         }
+        #gear-img {
+            width: 20px;
+            position: absolute;
+            right: -38px;
+        }
+        #gear-img:hover {
+            cursor: pointer;
+        }
+        #settings-container {
+            display: none;
+        }
+        .difficulty div {
+            width: 300px;
+            margin: 20px;
+            text-align: left;
+            padding: 18px;
+            font-size: 18px;
+            font-family: sans-serif;
+            border-radius: 10px;
+            background: black;
+            color: white;
+        }
+        .difficulty div:hover {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -70,6 +96,15 @@
     <div id="container">
         <div class="image-container">
             <img id="face-img" src="happy.png"/>
+            <img id="gear-img" src="gear.png"/>
+        </div>
+        <div id="settings-container">
+            <h3>Select Difficulty</h3>
+            <div class="difficulty">
+                <div id="easy">Peace of Cake</div>
+                <div id="medium">Right in the Middle</div>
+                <div id="hard">Nothing is Impossible</div>
+            </div>
         </div>
         <div id="game-container"></div>
         <div id="info">
