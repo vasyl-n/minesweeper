@@ -3,6 +3,7 @@
     <style>
         h2 {
             text-align: center;
+            font-family: sans-serif;
         }
         #container {
             margin: 0 auto;
@@ -15,16 +16,17 @@
             vertical-align:top;
             display: inline-block;
             font-size: 20px;
-            border: solid white 2px;
-            height: 30px;
-            width: 30px;
+            margin: 1px;
+            height: 26px;
+            width: 26px;
             background: black;
             cursor: pointer;
             justify-content: center;
             display: inline-flex;
             align-items: center;
-            font-family: Georgia;
+            font-family: sans-serif;
             color: white;
+            border-radius: 5px;
         }
         .row {
             margin: 0 auto;
@@ -36,7 +38,10 @@
         }
         #info {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
+            font-family: sans-serif;
+            padding-top: 10px;
+            font-weight: 600;
         }
         #face-img {
             width: 30px;
@@ -47,6 +52,16 @@
             display: flex;
             margin-top: 2px;
             margin-bottom: 7px;
+            margin: 2px 40px 7px 40px;
+        }
+        .image-container:hover {
+            cursor: pointer;
+        }
+        #moves-container {
+            text-align: center;
+        }
+        #time-container {
+            text-align: center;
         }
     </style>
 </head>

@@ -21,33 +21,47 @@ const openCellBackgroundColor = "gray";
 
 document.addEventListener('DOMContentLoaded', function(){
     
-    var gridSize = 10;
-
+    var gridSize = 17;
     var container = document.getElementById('game-container');
-    
     var bombs = [];
-    // while(bombs.length < gridSize ** 1.3){
-    while(bombs.length < gridSize ** 1){
-        var rand = Math.ceil(Math.random() * (gridSize **2))
-        if(bombs.indexOf(rand) < 0){
-            bombs.push(rand)
-        }
-    }
+    var openedCells = []
+    var timerCount = 0;
+    var ticker = new AdjustingInterval(doWork, 10);
+    var timerStarted = false;
 
-    console.log(bombs)
-    
-    var counter = 1
-    for(var i = 0; i < gridSize; i++){
-        var row = document.createElement('div');
-        row.setAttribute('class', 'row')
-        for(var j = 0; j < gridSize; j++){
-            var cell = document.createElement('div');
-            cell.setAttribute('class', 'cell')
-            cell.setAttribute('id', counter.toString())
-            counter += 1
-            row.appendChild(cell);
-        };
-        container.appendChild(row)
+    var startGame = function() {
+        bombs = [];
+        moves = 0;
+        openedCells = [];
+        timerCount = 0;
+        timerStarted = false;
+        document.getElementById("moves-value").innerHTML = 0;
+        document.getElementById('face-img').removeEventListener('click', startGame);
+        document.getElementById('face-img').setAttribute("src", "happy.png")
+        document.getElementById("time-value").innerHTML = "0:00";
+        container.innerHTML = "";
+
+        while(bombs.length < gridSize ** 1){
+            var rand = Math.ceil(Math.random() * (gridSize **2))
+            if(bombs.indexOf(rand) < 0){
+                bombs.push(rand)
+            }
+        }
+
+        var counter = 1
+        for(var i = 0; i < gridSize; i++){
+            var row = document.createElement('div');
+            row.setAttribute('class', 'row')
+            for(var j = 0; j < gridSize; j++){
+                var cell = document.createElement('div');
+                cell.setAttribute('class', 'cell')
+                cell.setAttribute('id', counter.toString())
+                cell.addEventListener('click', game)
+                counter += 1
+                row.appendChild(cell);
+            };
+            container.appendChild(row)
+        }
     }
 
     function isBomb(id){
@@ -215,8 +229,6 @@ document.addEventListener('DOMContentLoaded', function(){
         return arr
     }
     
-    
-    var openedCells = []
     function showOtherZeros(id){
         openedCells.push(id)
         var zeros = getZerosAround(id);
@@ -235,45 +247,35 @@ document.addEventListener('DOMContentLoaded', function(){
         }
     }
 
+    function doWork() {
+        let num = timerCount++
+        num = num.toString();
+        const splited = num.split('')
+        if (splited.length > 2) {
+            splited.splice(splited.length - 2, 0, ":")
+        } else {
+            splited.splice(0, 0, "0:")
+        }
+        document.getElementById("time-value").innerHTML = splited.join("");
+    };
 
-
-// For testing purposes, we'll just increment
-// this and send it out to the console.
-var justSomeNumber = 0;
-
-// Define the work to be done
-var doWork = function() {
-    let num = justSomeNumber++
-    num = num.toString();
-    const splited = num.split('')
-    if (splited.length > 2) {
-        splited.splice(splited.length - 2, 0, ":")
-    } else {
-        splited.splice(0, 0, "0:")
-    }
-    document.getElementById("time-value").innerHTML = splited.join("");
-};
-
-// Define what to do if something goes wrong
-var doError = function() {
-    console.warn('The drift exceeded the interval.');
-};
-
-// (The third argument is optional)
-var ticker = new AdjustingInterval(doWork, 10, doError);
-var timerStarted = false;
     function game(event){
         var id = parseInt(event.target.getAttribute('id'));
         document.getElementById("moves-value").innerHTML = ++moves;
         if(isBomb(id)){
             ticker.stop();
             document.getElementById('face-img').setAttribute("src", "sad.png")
-            document.getElementById('game-container').removeEventListener('click', game);
+            document.getElementById('face-img').addEventListener('click', startGame)
+
+            var cells = document.getElementsByClassName("cell");
+            for (var i = 0; i < cells.length; i++) {
+                cells[i].removeEventListener('click', game);
+            }
+
             for(i = 0; i < bombs.length; i++){
                 var bo = document.getElementById(bombs[i])
                 bo.innerHTML = "<img class='mine' src='mine.png'>"
                 event.target.style.background = openCellBackgroundColor;
-                document.removeEventListener('click', game)
             }
         }
         else {
@@ -289,11 +291,10 @@ var timerStarted = false;
             if(bCount === 0){
                 showOtherZeros(id)
             }
-            
         }
     }
     
-    document.getElementById('game-container').addEventListener('click', game)
+    startGame();
     
 })
 
