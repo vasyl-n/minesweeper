@@ -2,26 +2,56 @@
 <head>
     <style>
         h2 {
-            font-family: fantasy;
             text-align: center;
         }
         #container {
-                margin: 0 auto;
+            margin: 0 auto;
+            width: fit-content;
+            border: 2px solid black;
+            padding: 10px;
+            border-radius: 10px;
         }
         .cell {
             vertical-align:top;
             display: inline-block;
-            font-size: 23px;
-            border: solid black 2px;
+            font-size: 20px;
+            border: solid white 2px;
             height: 30px;
             width: 30px;
-            background: grey;
-            text-align: center;
+            background: black;
             cursor: pointer;
+            justify-content: center;
+            display: inline-flex;
+            align-items: center;
+            font-family: Georgia;
+            color: white;
+        }
+        .row {
+            margin: 0 auto;
+            width: fit-content;
+        }
+        .mine {
+            width: 22px;
+            margin-top: 3px;
+        }
+        #info {
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
-<body><h2>Minesweeper</h2>
-    <div id="container"></div>
+<body>
+    <h2>Sweep the mines!</h2>
+    <div id="container">
+        <div id="game-container"></div>
+        <div id="info">
+            <div id="moves-container">
+                <div id="moves-text">Moves</div><div id="moves-value">0</div>
+            </div>
+            <div id="time-container">
+                <div id="time-text">Time</div><div id="time-value"></div>
+            </div>
+        </div>
+    </div>
     <script src='minesweeper.js'></script>
 </body>

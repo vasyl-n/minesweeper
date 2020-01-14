@@ -1,14 +1,36 @@
+const config = [
+    {
+        name: 'Peace of Cake',
+        gridSize: 7,
+        numOfMines: 15
+    },
+    {
+        name: 'Right in the Middle',
+        gridSize: 14,
+        numOfMines: 22
+    },
+    {
+        name: 'Nothing is Impossible',
+        gridSize: 7,
+        numOfMines: 15
+    },
+]
+let moves = 0;
+
+const openCellBackgroundColor = "linear-gradient(45deg, black, transparent)";
+
 document.addEventListener('DOMContentLoaded', function(){
     
-    var gridSize = parseInt(prompt("Set size"));
+    var gridSize = 10;
 
-    var container = document.getElementById('container');
+    var container = document.getElementById('game-container');
     
     var bombs = [];
-    while(bombs.length < gridSize ** 1.3){
+    // while(bombs.length < gridSize ** 1.3){
+    while(bombs.length < gridSize ** 1){
         var rand = Math.ceil(Math.random() * (gridSize **2))
         if(bombs.indexOf(rand) < 0){
-        bombs.push(rand)
+            bombs.push(rand)
         }
     }
 
@@ -112,12 +134,6 @@ document.addEventListener('DOMContentLoaded', function(){
         } else {return false}
     }
     
-    
-    
-    
-    
-    
-    
     function isBottomNext(id, callback){
         id = id + gridSize
         return isNext(id, callback)
@@ -207,7 +223,10 @@ document.addEventListener('DOMContentLoaded', function(){
         var allIds = getIdsAround(id);
         for(var i = 0; i < allIds.length; i++){
             var bCount = bombCount(allIds[i])
-            document.getElementById(allIds[i].toString()).innerHTML = bCount
+            if (bCount !== 0) {
+                document.getElementById(allIds[i].toString()).innerHTML = bCount
+            }
+            document.getElementById(allIds[i].toString()).style.background = openCellBackgroundColor;
         }
         for(var j = 0; j < zeros.length; j++){
             if(!openedCells.includes(zeros[j])){
@@ -216,27 +235,85 @@ document.addEventListener('DOMContentLoaded', function(){
         }
     }
 
+    function AdjustingInterval(workFunc, interval, errorFunc) {
+        var that = this;
+        var expected, timeout;
+        this.interval = interval;
     
+        this.start = function() {
+            expected = Date.now() + this.interval;
+            timeout = setTimeout(step, this.interval);
+        }
+    
+        this.stop = function() {
+            clearTimeout(timeout);
+        }
+    
+        function step() {
+            var drift = Date.now() - expected;
+            if (drift > that.interval) {
+                // You could have some default stuff here too...
+                if (errorFunc) errorFunc();
+            }
+            workFunc();
+            expected += that.interval;
+            timeout = setTimeout(step, Math.max(0, that.interval-drift));
+        }
+    }
+
+// For testing purposes, we'll just increment
+// this and send it out to the console.
+var justSomeNumber = 0;
+
+// Define the work to be done
+var doWork = function() {
+    let num = justSomeNumber++
+    num = num.toString();
+    const splited = num.split('')
+    if (splited.length > 2) {
+        splited.splice(splited.length - 2, 0, ":")
+    } else {
+        splited.splice(0, 0, "0:")
+    }
+    document.getElementById("time-value").innerHTML = splited.join("");
+};
+
+// Define what to do if something goes wrong
+var doError = function() {
+    console.warn('The drift exceeded the interval.');
+};
+
+// (The third argument is optional)
+var ticker = new AdjustingInterval(doWork, 10, doError);
+
     function game(event){
         var id = parseInt(event.target.getAttribute('id'));
-        console.log(getIdsAround(id),isInLastCol(id))
+        document.getElementById("moves-value").innerHTML = ++moves;
         if(isBomb(id)){
+            ticker.stop();
             console.log("loooser")
+            document.getElementById('game-container').removeEventListener('click', game);
             for(i = 0; i < bombs.length; i++){
                 var bo = document.getElementById(bombs[i])
-                bo.innerHTML = "B"
+                bo.innerHTML = "<img class='mine' src='mine.png'>"
+                event.target.style.background = openCellBackgroundColor;
                 document.removeEventListener('click', game)
             }
         }
         else {
+            ticker.start();
             var bCount = bombCount(id)
-            event.target.innerHTML = bCount
+            if(bCount !== 0){
+                event.target.innerHTML = bCount
+                event.target.style.background = openCellBackgroundColor;
+            }
             if(bCount === 0){
                 showOtherZeros(id)
             }
+            
         }
     }
     
-    document.addEventListener('click', game)
+    document.getElementById('game-container').addEventListener('click', game)
     
 })
