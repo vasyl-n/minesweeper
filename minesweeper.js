@@ -1,20 +1,21 @@
-const config = [
-    {
-        name: 'Peace of Cake',
+const config = {
+    7: {
+        name: 'Piece of Cake',
         gridSize: 7,
-        numOfMines: 15
+        numOfMines: 10
     },
-    {
+    14: {
         name: 'Right in the Middle',
         gridSize: 14,
         numOfMines: 22
     },
-    {
+    19: {
         name: 'Nothing is Impossible',
         gridSize: 7,
         numOfMines: 15
-    },
-]
+    }
+}
+
 let moves = 0;
 
 const openCellBackgroundColor = "gray";
@@ -281,7 +282,7 @@ document.addEventListener('DOMContentLoaded', function(){
         if(isBomb(id)){
             ticker.stop();
             document.getElementById('face-img').setAttribute("src", "sad.png")
-            document.getElementById('face-img').addEventListener('click', () => startGame(gridSize))
+            document.getElementById('face-img').addEventListener('click', () => startGame(gridSize, config[gridSize].numOfMines))
 
             var cells = document.getElementsByClassName("cell");
             for (var i = 1; i <= cells.length; i++) {
@@ -329,9 +330,9 @@ document.addEventListener('DOMContentLoaded', function(){
             document.getElementById('settings-container').style.display = "none";
             settingsOn = false;
         }
-        document.getElementById('easy').addEventListener('click', () => startGame(7, 15))
-        document.getElementById('medium').addEventListener('click', () => startGame(14, 40))
-        document.getElementById('hard').addEventListener('click', () => startGame(19, 80))
+        document.getElementById('easy').addEventListener('click', () => startGame(7, config["7"].numOfMines))
+        document.getElementById('medium').addEventListener('click', () => startGame(14, config["14"].numOfMines))
+        document.getElementById('hard').addEventListener('click', () => startGame(19, config["19"].numOfMines))
     }
     
     startGame();
