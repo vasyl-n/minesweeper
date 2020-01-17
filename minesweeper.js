@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function(){
         document.getElementById('gear-img').style.transform = `rotate(${gearAngle}deg)`;
     }
     gearAnimationTimer.start()
-    var startGame = function(size = 14, nMines = 40) {
+    var startGame = function(size = config["14"].gridSize, nMines = config["14"].numOfMines) {
         document.getElementById('game-container').style.display = "block";
         document.getElementById('settings-container').style.display = "none";
         settingsOn = false;
