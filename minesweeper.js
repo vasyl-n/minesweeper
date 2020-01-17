@@ -2,7 +2,7 @@ const config = {
     7: {
         name: 'Piece of Cake',
         gridSize: 7,
-        numOfMines: 10
+        numOfMines: 2
     },
     14: {
         name: 'Right in the Middle',
@@ -253,6 +253,9 @@ document.addEventListener('DOMContentLoaded', function(){
         for(var i = 0; i < allIds.length; i++){
             var bCount = bombCount(allIds[i])
             if (bCount !== 0) {
+                if(!openedCells.includes(allIds[i])){
+                    openedCells.push(allIds[i])
+                }
                 document.getElementById(allIds[i].toString()).innerHTML = bCount
             }
             document.getElementById(allIds[i].toString()).style.background = openCellBackgroundColor;
@@ -312,12 +315,27 @@ document.addEventListener('DOMContentLoaded', function(){
             }
             var bCount = bombCount(id)
             if(bCount !== 0){
+                openedCells.push(id)
                 event.target.innerHTML = bCount
                 event.target.style.background = openCellBackgroundColor;
             }
             if(bCount === 0){
                 showOtherZeros(id)
             }
+        }
+        const currentConfig = Object.keys(config).reduce((acc, el) => {
+            if (acc !== null) return acc;
+            if (config[el].gridSize === gridSize) {
+                acc = config[el]
+            }
+            return acc;
+        }, null)
+
+        const numOfCells = currentConfig.gridSize * currentConfig.gridSize;
+        let openedCount = openedCells.length;
+
+        if (openedCount === numOfCells - currentConfig.numOfMines) {
+            console.log("winner")
         }
     }
 
