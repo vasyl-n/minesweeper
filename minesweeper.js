@@ -12,7 +12,7 @@ const config = {
     19: {
         name: 'Nothing is Impossible',
         gridSize: 7,
-        numOfMines: 15
+        numOfMines: 60
     }
 }
 
@@ -288,7 +288,8 @@ document.addEventListener('DOMContentLoaded', function(){
             for (var i = 1; i <= cells.length; i++) {
                 cells[i - 1].removeEventListener('click', game);
                 var cell = document.getElementById(i)
-                if (bombs.indexOf(i) > 0) {
+                console.log(bombs.indexOf(i))
+                if (bombs.indexOf(i) >= 0) {
                     cell.innerHTML = "<img class='mine' src='mine.png'>"
                     cell.style.background = openCellBackgroundColor;
                 } else {    
