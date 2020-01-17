@@ -291,7 +291,6 @@ document.addEventListener('DOMContentLoaded', function(){
             for (var i = 1; i <= cells.length; i++) {
                 cells[i - 1].removeEventListener('click', game);
                 var cell = document.getElementById(i)
-                console.log(bombs.indexOf(i))
                 if (bombs.indexOf(i) >= 0) {
                     cell.innerHTML = "<img class='mine' src='mine.png'>"
                     cell.style.background = openCellBackgroundColor;
@@ -336,6 +335,11 @@ document.addEventListener('DOMContentLoaded', function(){
 
         if (openedCount === numOfCells - currentConfig.numOfMines) {
             console.log("winner")
+            ticker.stop();
+            for (var i = 1; i <= gridSize* gridSize; i++) {
+                const cell = document.getElementById(i)
+                cell.removeEventListener('click', game);
+            }
         }
     }
 
