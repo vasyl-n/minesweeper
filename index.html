@@ -33,6 +33,10 @@
             color: white;
             border-radius: 5px;
         }
+        .cell-compressed { 
+            height: 22px;
+            width: 22px;
+        }
         .row {
             margin: 0 auto;
             width: fit-content;
@@ -104,6 +108,7 @@
             width: 100vw;
             height: 100vh;
             position: relative;
+            overflow: hidden;
         }
         .wrapper {
             position: absolute;
@@ -114,36 +119,13 @@
             width: 100%;
             background: transparent;
         }
-
-        #win-message {
-            /* display: none; */
-
-            padding: 40px;
-            font-size: 32px;
-            z-index: 1;
-            background: black;
-            color: white;
-            border: 2px solid white;
-            border-radius: 10px;
-        }
-        #win-message-container {
-            position: absolute;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            margin-top: 20vh;
-        }
-
-        canvas { width: 100%; height: 100% }
+        canvas { width: 100%; height: 100% }        
     </style>
 </head>
 <body>  
     <div id="app">
         <div class="wrapper">
             <h2 id="header">Sweep the mines!</h2>
-            <!-- <div id="win-message-container"> -->
-                <!-- <div id="win-message">Congrats!</div> -->
-            <!-- </div> -->
             <div id="container">
                 <div class="image-container">
                     <img id="face-img" src="happy.png"/>

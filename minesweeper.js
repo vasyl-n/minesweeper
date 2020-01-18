@@ -1,17 +1,17 @@
 const config = {
-    7: {
+    easy: {
         name: 'Piece of Cake',
         gridSize: 7,
-        numOfMines: 2
+        numOfMines: 5
     },
-    14: {
+    medium: {
         name: 'Right in the Middle',
         gridSize: 14,
         numOfMines: 22
     },
-    19: {
+    hard: {
         name: 'Nothing is Impossible',
-        gridSize: 7,
+        gridSize: 19,
         numOfMines: 60
     }
 }
@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function(){
     var ticker = new AdjustingInterval(getTime, 10);
     var timerStarted = false;
     var settingsOn = false;
+    var currentDifficulty;
 
     var gearAnimationTimer = new AdjustingInterval(rotateGear, 100);
     var gearAngle = 0
@@ -38,13 +39,15 @@ document.addEventListener('DOMContentLoaded', function(){
         document.getElementById('gear-img').style.transform = `rotate(${gearAngle}deg)`;
     }
     gearAnimationTimer.start()
-    var startGame = function(size = config["14"].gridSize, nMines = config["14"].numOfMines) {
+    var startGame = function(size = config.medium.gridSize, nMines = config.medium.numOfMines, difficulty = "medium") {
         document.getElementById("header").innerHTML = "Sweep the Mines"
+
 
         settingsOn = false;
         if (size) {
             gridSize = size;
         }
+        currentDifficulty = difficulty;
         bombs = [];
         timerCount = 0;
         ticker.stop()
@@ -82,6 +85,13 @@ document.addEventListener('DOMContentLoaded', function(){
         document.getElementById('settings-container').style.display = "none";
         document.getElementById('game-container').style.display = "block";
         document.getElementById('container').style.display = "block";
+        if (size === config.hard.gridSize) {
+            var cells = document.getElementsByClassName("cell");
+            for (var i = 0; i < cells.length; i++) {
+                console.log(cells[i])
+                cells[i].classList.add("cell-compressed");
+            }
+        }
     }
 
     function isBomb(id){
@@ -290,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function(){
         if(isBomb(id)){
             ticker.stop();
             document.getElementById('face-img').setAttribute("src", "sad.png")
-            document.getElementById('face-img').addEventListener('click', () => startGame(gridSize, config[gridSize].numOfMines))
+            document.getElementById('face-img').addEventListener('click', () => startGame(gridSize, config[currentDifficulty].numOfMines))
 
             var cells = document.getElementsByClassName("cell");
             for (var i = 1; i <= cells.length; i++) {
@@ -345,7 +355,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 const cell = document.getElementById(i)
                 cell.removeEventListener('click', game);
             }
-            document.getElementById('face-img').addEventListener('click', () => startGame(gridSize, config[gridSize].numOfMines))
+            document.getElementById('face-img').addEventListener('click', () => startGame(gridSize, config[currentDifficulty].numOfMines))
         }
     }
 
@@ -359,9 +369,9 @@ document.addEventListener('DOMContentLoaded', function(){
             document.getElementById('settings-container').style.display = "none";
             settingsOn = false;
         }
-        document.getElementById('easy').addEventListener('click', () => startGame(7, config["7"].numOfMines))
-        document.getElementById('medium').addEventListener('click', () => startGame(14, config["14"].numOfMines))
-        document.getElementById('hard').addEventListener('click', () => startGame(19, config["19"].numOfMines))
+        document.getElementById('easy').addEventListener('click', () => startGame(config.easy.gridSize, config.easy.numOfMines, "easy"))
+        document.getElementById('medium').addEventListener('click', () => startGame(config.medium.gridSize, config.medium.numOfMines, "medium"))
+        document.getElementById('hard').addEventListener('click', () => startGame(config.hard.gridSize, config.hard.numOfMines, "hard"))
     }
     
     startGame();
