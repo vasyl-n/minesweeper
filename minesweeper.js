@@ -87,7 +87,6 @@ document.addEventListener('DOMContentLoaded', function(){
         if (size === config.hard.gridSize) {
             var cells = document.getElementsByClassName("cell");
             for (var i = 0; i < cells.length; i++) {
-                console.log(cells[i])
                 cells[i].classList.add("cell-compressed");
             }
         }
