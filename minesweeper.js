@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function(){
         if (size) {
             gridSize = size;
         }
-        bombs = [49];
+        bombs = [];
         timerCount = 0;
         ticker.stop()
         moves = 0;
