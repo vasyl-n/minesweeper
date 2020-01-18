@@ -41,8 +41,6 @@ document.addEventListener('DOMContentLoaded', function(){
     var startGame = function(size = config["14"].gridSize, nMines = config["14"].numOfMines) {
         document.getElementById("header").innerHTML = "Sweep the Mines"
 
-        document.getElementById('game-container').style.display = "block";
-        document.getElementById('settings-container').style.display = "none";
         settingsOn = false;
         if (size) {
             gridSize = size;
@@ -81,6 +79,9 @@ document.addEventListener('DOMContentLoaded', function(){
             };
             container.appendChild(row)
         }
+        document.getElementById('settings-container').style.display = "none";
+        document.getElementById('game-container').style.display = "block";
+        document.getElementById('container').style.display = "block";
     }
 
     function isBomb(id){
