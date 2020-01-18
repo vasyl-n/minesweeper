@@ -168,7 +168,7 @@
             var star = new THREE.Vector3();
             star.x = THREE.Math.randFloatSpread( 2000 );
             star.y = THREE.Math.randFloatSpread( 2000 );
-            star.z = THREE.Math.randFloatSpread( 2000 );
+            star.z = THREE.Math.randFloatSpread( 5000 );
             starsGeometry.vertices.push( star );
         }
 
@@ -180,22 +180,24 @@
         scene.add( starField );
 
         let oldTime = Date.now();
+        
+
+        const traveDistance = 0.001;
 
         const updateStars = (deltaTime) => {
-                time += deltaTime;
-                starsGeometry.vertices.forEach((el) => {
-                    if ( el.x > 400) {
-                        el.x = Math.random() * -400;
-                    } else {
-                        el.x = el.x + deltaTime / 60;
-                    }
-                    if ( el.y > 400) {
-                        el.y = Math.random() *  -400;
-                    } else {
-                        el.y = el.y + deltaTime / 60;
-                    }
-                })
-                starsGeometry.verticesNeedUpdate = true;
+            starsGeometry.vertices.forEach((el) => {
+                if ( el.x > 400) {
+                    el.x = Math.random() * -400;
+                } else {
+                    el.x = el.x + traveDistance * deltaTime;
+                }
+                if ( el.y > 400) {
+                    el.y = Math.random() *  -400;
+                } else {
+                    el.y = el.y + traveDistance * deltaTime;
+                }
+            })
+            starsGeometry.verticesNeedUpdate = true;
         }
 
         const animate = function () {
