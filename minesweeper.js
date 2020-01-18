@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function(){
     var startGame = function(size = config.medium.gridSize, nMines = config.medium.numOfMines, difficulty = "medium") {
         document.getElementById("header").innerHTML = "Sweep the Mines"
 
-
         settingsOn = false;
         if (size) {
             gridSize = size;
@@ -296,7 +295,9 @@ document.addEventListener('DOMContentLoaded', function(){
 
     function game(event){
         var id = parseInt(event.target.getAttribute('id'));
-        document.getElementById("moves-value").innerHTML = ++moves;
+        if (!openedCells.includes(id)) {
+            document.getElementById("moves-value").innerHTML = ++moves;
+        }
         if(isBomb(id)){
             ticker.stop();
             document.getElementById('face-img').setAttribute("src", "sad.png")
@@ -334,6 +335,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 event.target.style.background = openCellBackgroundColor;
             }
             if(bCount === 0){
+                event.target.style.background = openCellBackgroundColor;
                 showOtherZeros(id)
             }
         }
@@ -347,8 +349,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
         const numOfCells = currentConfig.gridSize * currentConfig.gridSize;
         let openedCount = openedCells.length;
-
-        if (openedCount === numOfCells - currentConfig.numOfMines) {
+        if (openedCount >= numOfCells - currentConfig.numOfMines) {
             document.getElementById("header").innerHTML = "Congrats!"
             ticker.stop();
             for (var i = 1; i <= gridSize* gridSize; i++) {
