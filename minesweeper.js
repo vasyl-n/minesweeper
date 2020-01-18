@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function(){
         if (size) {
             gridSize = size;
         }
-        bombs = [];
+        bombs = [49];
         timerCount = 0;
         ticker.stop()
         moves = 0;
@@ -136,10 +136,12 @@ document.addEventListener('DOMContentLoaded', function(){
     
     function isBottomPrevBomb(id){
         id = id + gridSize
+        if (id >= gridSize * gridSize) return false
         return isPrevousBomb(id)
     }
     function isTopNextBomb(id){
         id = id - gridSize
+        if (id <= 0) return false
         return isNextBomb(id)
     }
     function isTopPrevBomb(id){
