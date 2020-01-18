@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function(){
         if(isBomb(id)){
             ticker.stop();
             document.getElementById('face-img').setAttribute("src", "sad.png")
-            document.getElementById('face-img').addEventListener('click', () => startGame(gridSize, config[currentDifficulty].numOfMines))
+            document.getElementById('face-img').addEventListener('click', () => startGame(gridSize, config[currentDifficulty].numOfMines, currentDifficulty))
 
             var cells = document.getElementsByClassName("cell");
             for (var i = 1; i <= cells.length; i++) {
@@ -355,7 +355,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 const cell = document.getElementById(i)
                 cell.removeEventListener('click', game);
             }
-            document.getElementById('face-img').addEventListener('click', () => startGame(gridSize, config[currentDifficulty].numOfMines))
+            document.getElementById('face-img').addEventListener('click', () => startGame(gridSize, config[currentDifficulty].numOfMines, currentDifficulty))
         }
     }
 
