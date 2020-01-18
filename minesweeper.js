@@ -39,6 +39,8 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     gearAnimationTimer.start()
     var startGame = function(size = config["14"].gridSize, nMines = config["14"].numOfMines) {
+        document.getElementById("header").innerHTML = "Sweep the Mines"
+
         document.getElementById('game-container').style.display = "block";
         document.getElementById('settings-container').style.display = "none";
         settingsOn = false;
@@ -334,12 +336,13 @@ document.addEventListener('DOMContentLoaded', function(){
         let openedCount = openedCells.length;
 
         if (openedCount === numOfCells - currentConfig.numOfMines) {
-            console.log("winner")
+            document.getElementById("header").innerHTML = "Congrats!"
             ticker.stop();
             for (var i = 1; i <= gridSize* gridSize; i++) {
                 const cell = document.getElementById(i)
                 cell.removeEventListener('click', game);
             }
+            document.getElementById('face-img').addEventListener('click', () => startGame(gridSize, config[gridSize].numOfMines))
         }
     }
 

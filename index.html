@@ -1,9 +1,12 @@
 <!DOCType html>
 <head>
     <style>
+        body { margin: 0; }
         h2,h3 {
             text-align: center;
             font-family: sans-serif;
+            color: white;
+            font-size: 32px;
         }
         #container {
             margin: 0 auto;
@@ -11,6 +14,7 @@
             border: 2px solid black;
             padding: 10px;
             border-radius: 10px;
+            background: white;
         }
         .cell {
             vertical-align:top;
@@ -95,32 +99,103 @@
             border: 3px solid black;
             box-sizing: border-box;
         }
+        #app {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        .wrapper {
+            position: absolute;
+            display: flex;
+            background: white;
+            flex-direction: column;
+            margin: 0 auto;
+            width: 100%;
+            background: transparent;
+        }
+
+        #win-message {
+            /* display: none; */
+
+            padding: 40px;
+            font-size: 32px;
+            z-index: 1;
+            background: black;
+            color: white;
+            border: 2px solid white;
+            border-radius: 10px;
+        }
+        #win-message-container {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 20vh;
+        }
+
+        canvas { width: 100%; height: 100% }
     </style>
 </head>
-<body>
-    <h2>Sweep the mines!</h2>
-    <div id="container">
-        <div class="image-container">
-            <img id="face-img" src="happy.png"/>
-            <img id="gear-img" src="gear.png"/>
-        </div>
-        <div id="settings-container">
-            <h3>Select Difficulty</h3>
-            <div class="difficulty">
-                <div id="easy">Piece of Cake</div>
-                <div id="medium">Right in the Middle</div>
-                <div id="hard">Nothing is Impossible</div>
+<body>  
+    <div id="app">
+        <div class="wrapper">
+            <h2 id="header">Sweep the mines!</h2>
+            <!-- <div id="win-message-container"> -->
+                <!-- <div id="win-message">Congrats!</div> -->
+            <!-- </div> -->
+            <div id="container">
+                <div class="image-container">
+                    <img id="face-img" src="happy.png"/>
+                    <img id="gear-img" src="gear.png"/>
+                </div>
+                <div id="settings-container">
+                    <h3>Select Difficulty</h3>
+                    <div class="difficulty">
+                        <div id="easy">Piece of Cake</div>
+                        <div id="medium">Right in the Middle</div>
+                        <div id="hard">Nothing is Impossible</div>
+                    </div>
+                </div>
+                <div id="game-container"></div>
+                <div id="info">
+                    <div id="moves-container">
+                        <div id="moves-text">Moves</div><div id="moves-value">0</div>
+                    </div>
+                    <div id="time-container">
+                        <div id="time-text">Time</div><div id="time-value">0:00</div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div id="game-container"></div>
-        <div id="info">
-            <div id="moves-container">
-                <div id="moves-text">Moves</div><div id="moves-value">0</div>
-            </div>
-            <div id="time-container">
-                <div id="time-text">Time</div><div id="time-value">0:00</div>
-            </div>
-        </div>
+  
     </div>
     <script src='minesweeper.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js" integrity="sha256-gSh8eotzb/CVvCREGPUNgIWuDnTYnZvVOQnRrP1eDjI=" crossorigin="anonymous"></script>
+    <script>
+        const app = document.querySelector('#app')
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        app.appendChild( renderer.domElement );
+        //adds stars
+        var starsGeometry = new THREE.Geometry();
+        for ( var i = 0; i < 10000; i ++ ) {
+            var star = new THREE.Vector3();
+            star.x = THREE.Math.randFloatSpread( 2000 );
+            star.y = THREE.Math.randFloatSpread( 2000 );
+            star.z = THREE.Math.randFloatSpread( 2000 );
+            starsGeometry.vertices.push( star );
+        }
+
+        var starsMaterial = new THREE.PointsMaterial( { color: 0x888888 } );
+        var starField = new THREE.Points( starsGeometry, starsMaterial );
+        scene.add( starField );
+        const animate = function () {
+            requestAnimationFrame( animate );
+            renderer.render( scene, camera );
+        };
+        animate();
+
+    </script>
 </body>
