@@ -174,31 +174,30 @@
 
         var starsMaterial = new THREE.PointsMaterial( { color: 0x888888 } );
         var starField = new THREE.Points( starsGeometry, starsMaterial );
+
+
         starField.name = 'teset'
         scene.add( starField );
 
-        const updateStars = (starField) => {
-            var selectedObject = scene.getObjectByName(starField.name);
-            scene.remove( selectedObject );
+        const updateStars = (starsGeometry) => {
+            starsGeometry.vertices.forEach((el) => {
+                // console.log(el)
+                if ( el.x > 400) {
+                    el.x = Math.random() * -400;
+                } else {
+                    el.x ++;
+                }
+                if ( el.y > 400) {
+                    el.y = Math.random() *  -400;
+                } else {
+                    el.y ++;
+                }
+            })
 
-            var starsGeometry = new THREE.Geometry();
-            for ( var i = 0; i < 10000; i ++ ) {
-                var star = new THREE.Vector3();
-                star.x = THREE.Math.randFloatSpread( 2000 );
-                star.y = THREE.Math.randFloatSpread( 2000 );
-                star.z = THREE.Math.randFloatSpread( 2000 );
-                starsGeometry.vertices.push( star );
-            }
-
-            var starsMaterial = new THREE.PointsMaterial( { color: 0x888888 } );
-            var starField = new THREE.Points( starsGeometry, starsMaterial );
-            starField.name = 'teset'
-
-            scene.add( starField );
+            starsGeometry.verticesNeedUpdate = true
         }
         const animate = function () {
-
-            // updateStars(starField)
+            updateStars(starsGeometry)
             requestAnimationFrame( animate );
             renderer.render( scene, camera );
         };
