@@ -5,7 +5,6 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 app.appendChild( renderer.domElement );
 
-
 var starsGeometry = new THREE.Geometry();
 for ( var i = 0; i < 10000; i ++ ) {
     var star = new THREE.Vector3();
@@ -18,12 +17,10 @@ for ( var i = 0; i < 10000; i ++ ) {
 var starsMaterial = new THREE.PointsMaterial( { color: 0x888888 } );
 var starField = new THREE.Points( starsGeometry, starsMaterial );
 
-
-starField.name = 'teset'
+starField.name = 'starField'
 scene.add( starField );
 
 let oldTime = Date.now();
-
 
 const traveDistance = 0.001;
 
