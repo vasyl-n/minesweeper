@@ -1,38 +1,21 @@
-const config = {
-    easy: {
-        name: 'Piece of Cake',
-        gridSize: 7,
-        numOfMines: 5
-    },
-    medium: {
-        name: 'Right in the Middle',
-        gridSize: 14,
-        numOfMines: 22
-    },
-    hard: {
-        name: 'Nothing is Impossible',
-        gridSize: 19,
-        numOfMines: 60
-    }
-}
+import { config } from "./gameLevelsConfig.js"
+import Interval from './interval.js';
 
-let moves = 0;
-
-const openCellBackgroundColor = "gray";
+const OPEN_CELL_BACKGROUND = "gray";
 
 document.addEventListener('DOMContentLoaded', function(){
-    
+    let moves = 0;
     var gridSize;
     var container = document.getElementById('game-container');
     var bombs = [];
     var openedCells = []
     var timerCount = 0;
-    var ticker = new AdjustingInterval(getTime, 10);
+    var ticker = new Interval(getTime, 10);
     var timerStarted = false;
     var settingsOn = false;
     var currentDifficulty;
 
-    var gearAnimationTimer = new AdjustingInterval(rotateGear, 100);
+    var gearAnimationTimer = new Interval(rotateGear, 100);
     var gearAngle = 0
     function rotateGear() {
         gearAngle += 2
@@ -178,44 +161,6 @@ document.addEventListener('DOMContentLoaded', function(){
         } else {return false}
     }
     
-    function isBottomNext(id, callback){
-        id = id + gridSize
-        return isNext(id, callback)
-    }
-    
-    function isBottomPrev(id, callback){
-        id = id + gridSize
-        return isPrevous(id, callback)
-    }
-    function isTopNext(id, callback){
-        id = id - gridSize
-        return isNext(id, callback)
-    }
-    function isTopPrev(id, callback){
-        id = id - gridSize
-        return isPrevous(id, callback)
-    }
-    
-    function isOnBottom(id, callback){
-        return callback(id + gridSize)
-    }
-    
-    function isOnTop(id, callback){
-        return callback(id - gridSize)
-    }
-  
-    function isNext(id, callback){
-        if(callback(id+1) && !isInLastCol(id)){
-            return true;
-        } else {return false}
-    }
-    
-    function isPrevous(id, callback){
-        if(callback(id-1) && !isInFirstCol(id)){
-            return true;
-        } else {return false}
-    }
-    
     function isInFirstCol(id){
         var ar = [];
         for(var i = 1; i < gridSize**2; i+=gridSize){
@@ -271,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 }
                 document.getElementById(allIds[i].toString()).innerHTML = bCount
             }
-            document.getElementById(allIds[i].toString()).style.background = openCellBackgroundColor;
+            document.getElementById(allIds[i].toString()).style.background = OPEN_CELL_BACKGROUND;
         }
         for(var j = 0; j < zeros.length; j++){
             if(!openedCells.includes(zeros[j])){
@@ -292,33 +237,6 @@ document.addEventListener('DOMContentLoaded', function(){
         document.getElementById("time-value").innerHTML = splited.join("");
     };
 
-
-    // function playBombTone() {
-    //     // var synth1 = new Tone.FMSynth().toMaster()
-    //     var synth2 = new Tone.Synth().toMaster()
-    //     synth2.triggerAttackRelease('E4', '32n', 0)
-    //     synth2.triggerAttackRelease('F4', '32n', 2)
-    //     setTimeout(()=> synth2.dispose( ), 100)
-    // }
-
-    // function playNumberTone() {
-    //     var synth2 = new Tone.Synth().toMaster()
-    //     synth2.triggerAttackRelease('C4', '8n');
-    // }
-
-    // function playEmptyCellTone() {
-    //     var synth2 = new Tone.Synth().toMaster()
-    //     // synth1.triggerAttackRelease('C4', "8n", "16n")
-    //     // synth1.triggerAttackRelease('E4', "8n", "8n")
-    //     // synth1.triggerAttackRelease('A4', "8n", "7n")
-    //     // synth1.triggerAttackRelease('C5', "16n", "6n")
-    //     synth2.triggerAttackRelease('F5', 0.5, 0);
-    //     synth2.triggerAttackRelease('C4', 0.5, 1)
-    //     // synth1.triggerAttackRelease('E4', 0.5, 1)
-    //     // synth1.triggerAttackRelease('G4', 0.5, 2)
-    //     // synth1.triggerAttackRelease('B4', 0.5, 3)
-    // }
-
     function game(event){
         var id = parseInt(event.target.getAttribute('id'));
         if (!openedCells.includes(id)) {
@@ -336,15 +254,15 @@ document.addEventListener('DOMContentLoaded', function(){
                 var cell = document.getElementById(i)
                 if (bombs.indexOf(i) >= 0) {
                     cell.innerHTML = "<img class='mine' src='assets/mine.png'>"
-                    cell.style.background = openCellBackgroundColor;
+                    cell.style.background = OPEN_CELL_BACKGROUND;
                 } else {    
                     var bCount = bombCount(i)
                     if(bCount !== 0){
                         cell.innerHTML = bCount
-                        cell.style.background = openCellBackgroundColor;
+                        cell.style.background = OPEN_CELL_BACKGROUND;
                     }
                     if(bCount === 0){
-                        cell.style.background = openCellBackgroundColor;
+                        cell.style.background = OPEN_CELL_BACKGROUND;
                         showOtherZeros(i)
                     }
                 }
@@ -360,11 +278,11 @@ document.addEventListener('DOMContentLoaded', function(){
                 // playNumberTone()
                 openedCells.push(id)
                 event.target.innerHTML = bCount
-                event.target.style.background = openCellBackgroundColor;
+                event.target.style.background = OPEN_CELL_BACKGROUND;
             }
             if(bCount === 0){
                 // playEmptyCellTone()
-                event.target.style.background = openCellBackgroundColor;
+                event.target.style.background = OPEN_CELL_BACKGROUND;
                 showOtherZeros(id)
             }
         }
@@ -408,28 +326,3 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('gear-img').addEventListener('click', showSettings)
     
 })
-
-function AdjustingInterval(workFunc, interval, errorFunc) {
-    var that = this;
-    var expected, timeout;
-    this.interval = interval;
-
-    this.start = function() {
-        expected = Date.now() + this.interval;
-        timeout = setTimeout(step, this.interval);
-    }
-
-    this.stop = function() {
-        clearTimeout(timeout);
-    }
-
-    function step() {
-        var drift = Date.now() - expected;
-        if (drift > that.interval) {
-            if (errorFunc) errorFunc();
-        }
-        workFunc();
-        expected += that.interval;
-        timeout = setTimeout(step, Math.max(0, that.interval-drift));
-    }
-}
