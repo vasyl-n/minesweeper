@@ -1,126 +1,6 @@
 <!DOCType html>
 <head>
-    <style>
-        body { margin: 0; }
-        h2,h3 {
-            text-align: center;
-            font-family: sans-serif;
-            color: white;
-            font-size: 32px;
-        }
-        #container {
-            margin: 0 auto;
-            width: fit-content;
-            border: 2px solid black;
-            padding: 10px;
-            border-radius: 10px;
-            background: white;
-            display: none;
-        }
-        .cell {
-            vertical-align:top;
-            display: inline-block;
-            font-size: 20px;
-            margin: 1px;
-            height: 26px;
-            width: 26px;
-            background: black;
-            cursor: pointer;
-            justify-content: center;
-            display: inline-flex;
-            align-items: center;
-            font-family: sans-serif;
-            color: white;
-            border-radius: 5px;
-        }
-        .cell-compressed { 
-            height: 22px;
-            width: 22px;
-        }
-        .row {
-            margin: 0 auto;
-            width: fit-content;
-        }
-        .mine {
-            width: 22px;
-            margin-top: 3px;
-        }
-        #info {
-            display: flex;
-            justify-content: space-around;
-            font-family: sans-serif;
-            padding-top: 10px;
-            font-weight: 600;
-        }
-        #face-img {
-            width: 30px;
-            height: 30px;
-        }
-        .image-container {
-            background: white;
-            justify-content: center;
-            display: flex;
-            margin: 2px 40px 10px 40px;
-            position: relative;
-        }
-        #face-img:hover {
-            cursor: pointer;
-        }
-        #moves-container {
-            text-align: center;
-        }
-        #time-container {
-            text-align: center;
-        }
-        #gear-img {
-            width: 20px;
-            position: absolute;
-            left: -50px;
-            top: -12px;
-        }
-        #gear-img:hover {
-            cursor: pointer;
-        }
-        #settings-container {
-            display: none;
-        }
-        .difficulty div {
-            width: 300px;
-            margin: 20px 0;
-            text-align: left;
-            padding: 14px;
-            font-size: 18px;
-            font-family: sans-serif;
-            border-radius: 10px;
-            background: black;
-            color: white;
-            box-sizing: border-box;
-            border: 3px solid black;
-        }
-        .difficulty div:hover {
-            cursor: pointer;
-            background-color: white;
-            color: black;
-            border: 3px solid black;
-            box-sizing: border-box;
-        }
-        #app {
-            width: 100vw;
-            height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-        .wrapper {
-            position: absolute;
-            display: flex;
-            background: white;
-            flex-direction: column;
-            margin: 0 auto;
-            width: 100%;
-            background: transparent;
-        }
-        canvas { width: 100%; height: 100% }        
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>  
     <div id="app">
@@ -128,8 +8,8 @@
             <h2 id="header">Sweep the mines!</h2>
             <div id="container">
                 <div class="image-container">
-                    <img id="face-img" src="happy.png"/>
-                    <img id="gear-img" src="gear.png"/>
+                    <img id="face-img" src="assets/happy.png"/>
+                    <img id="gear-img" src="assets/gear.png"/>
                 </div>
                 <div id="settings-container">
                     <h3>Select Difficulty</h3>
@@ -150,66 +30,9 @@
                 </div>
             </div>
         </div>
-  
     </div>
-    <script src='minesweeper.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js" integrity="sha256-gSh8eotzb/CVvCREGPUNgIWuDnTYnZvVOQnRrP1eDjI=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.4.84/Tone.js" integrity="sha256-c5EKSvLhAQnR3IBkuUIaEGKYUyzto+YGOKkLPdtaHNY=" crossorigin="anonymous"></script>
-    <script>
-        const app = document.querySelector('#app')
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize( window.innerWidth, window.innerHeight );
-        app.appendChild( renderer.domElement );
-
-
-        var starsGeometry = new THREE.Geometry();
-        for ( var i = 0; i < 10000; i ++ ) {
-            var star = new THREE.Vector3();
-            star.x = THREE.Math.randFloatSpread( 2000 );
-            star.y = THREE.Math.randFloatSpread( 2000 );
-            star.z = THREE.Math.randFloatSpread( 5000 );
-            starsGeometry.vertices.push( star );
-        }
-
-        var starsMaterial = new THREE.PointsMaterial( { color: 0x888888 } );
-        var starField = new THREE.Points( starsGeometry, starsMaterial );
-
-
-        starField.name = 'teset'
-        scene.add( starField );
-
-        let oldTime = Date.now();
-        
-
-        const traveDistance = 0.001;
-
-        const updateStars = (deltaTime) => {
-            starsGeometry.vertices.forEach((el) => {
-                if ( el.x > 400) {
-                    el.x = Math.random() * -400;
-                } else {
-                    el.x = el.x + traveDistance * deltaTime;
-                }
-                if ( el.y > 400) {
-                    el.y = Math.random() *  -400;
-                } else {
-                    el.y = el.y + traveDistance * deltaTime;
-                }
-            })
-            starsGeometry.verticesNeedUpdate = true;
-        }
-
-        const animate = function () {
-            const newTime = Date.now();
-            const deltaTime = newTime - oldTime;
-            oldTime = newTime;
-            updateStars(deltaTime);
-            requestAnimationFrame( animate );
-            renderer.render( scene, camera );
-        };
-        animate();
-
-    </script>
+    <script src='minesweeper.js'></script>
+    <script src="background.js"></script>
 </body>

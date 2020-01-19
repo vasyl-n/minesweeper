@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function(){
         timerStarted = false;
         document.getElementById("moves-value").innerHTML = 0;
         document.getElementById('face-img').removeEventListener('click', startGame);
-        document.getElementById('face-img').setAttribute("src", "happy.png")
+        document.getElementById('face-img').setAttribute("src", "assets/happy.png")
         document.getElementById("time-value").innerHTML = "0:00";
         container.innerHTML = "";
         
@@ -319,7 +319,6 @@ document.addEventListener('DOMContentLoaded', function(){
     //     // synth1.triggerAttackRelease('B4', 0.5, 3)
     // }
 
-
     function game(event){
         var id = parseInt(event.target.getAttribute('id'));
         if (!openedCells.includes(id)) {
@@ -328,7 +327,7 @@ document.addEventListener('DOMContentLoaded', function(){
         if(isBomb(id)){
             // playBombTone();
             ticker.stop();
-            document.getElementById('face-img').setAttribute("src", "sad.png")
+            document.getElementById('face-img').setAttribute("src", "assets/sad.png")
             document.getElementById('face-img').addEventListener('click', () => startGame(gridSize, config[currentDifficulty].numOfMines, currentDifficulty))
 
             var cells = document.getElementsByClassName("cell");
@@ -336,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 cells[i - 1].removeEventListener('click', game);
                 var cell = document.getElementById(i)
                 if (bombs.indexOf(i) >= 0) {
-                    cell.innerHTML = "<img class='mine' src='mine.png'>"
+                    cell.innerHTML = "<img class='mine' src='assets/mine.png'>"
                     cell.style.background = openCellBackgroundColor;
                 } else {    
                     var bCount = bombCount(i)
