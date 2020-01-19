@@ -292,12 +292,41 @@ document.addEventListener('DOMContentLoaded', function(){
         document.getElementById("time-value").innerHTML = splited.join("");
     };
 
+
+    // function playBombTone() {
+    //     // var synth1 = new Tone.FMSynth().toMaster()
+    //     var synth2 = new Tone.Synth().toMaster()
+    //     synth2.triggerAttackRelease('E4', '32n', 0)
+    //     synth2.triggerAttackRelease('F4', '32n', 2)
+    //     setTimeout(()=> synth2.dispose( ), 100)
+    // }
+
+    // function playNumberTone() {
+    //     var synth2 = new Tone.Synth().toMaster()
+    //     synth2.triggerAttackRelease('C4', '8n');
+    // }
+
+    // function playEmptyCellTone() {
+    //     var synth2 = new Tone.Synth().toMaster()
+    //     // synth1.triggerAttackRelease('C4', "8n", "16n")
+    //     // synth1.triggerAttackRelease('E4', "8n", "8n")
+    //     // synth1.triggerAttackRelease('A4', "8n", "7n")
+    //     // synth1.triggerAttackRelease('C5', "16n", "6n")
+    //     synth2.triggerAttackRelease('F5', 0.5, 0);
+    //     synth2.triggerAttackRelease('C4', 0.5, 1)
+    //     // synth1.triggerAttackRelease('E4', 0.5, 1)
+    //     // synth1.triggerAttackRelease('G4', 0.5, 2)
+    //     // synth1.triggerAttackRelease('B4', 0.5, 3)
+    // }
+
+
     function game(event){
         var id = parseInt(event.target.getAttribute('id'));
         if (!openedCells.includes(id)) {
             document.getElementById("moves-value").innerHTML = ++moves;
         }
         if(isBomb(id)){
+            // playBombTone();
             ticker.stop();
             document.getElementById('face-img').setAttribute("src", "sad.png")
             document.getElementById('face-img').addEventListener('click', () => startGame(gridSize, config[currentDifficulty].numOfMines, currentDifficulty))
@@ -329,11 +358,13 @@ document.addEventListener('DOMContentLoaded', function(){
             }
             var bCount = bombCount(id)
             if(bCount !== 0){
+                // playNumberTone()
                 openedCells.push(id)
                 event.target.innerHTML = bCount
                 event.target.style.background = openCellBackgroundColor;
             }
             if(bCount === 0){
+                // playEmptyCellTone()
                 event.target.style.background = openCellBackgroundColor;
                 showOtherZeros(id)
             }
@@ -348,7 +379,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
         const numOfCells = currentConfig.gridSize * currentConfig.gridSize;
         let openedCount = openedCells.length;
-        if (openedCount >= numOfCells - currentConfig.numOfMines) {
+        if (openedCount >= numOfCells - currentConfig.numOfMines && ! isBomb(id)) {
             document.getElementById("header").innerHTML = "Congrats!"
             ticker.stop();
             for (var i = 1; i <= gridSize* gridSize; i++) {
