@@ -16,4 +16,6 @@ export const config = {
   }
 }
 
+export const OPEN_CELL_BACKGROUND = "gray";
+
 export default config;
