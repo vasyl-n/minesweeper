@@ -13,7 +13,7 @@ var settingsOn = false;
 var currentDifficulty;
 var gearAnimationTimer = new Interval(rotateGear, 100);
 
-var startGame = function(size = config.medium.gridSize, nMines = config.medium.numOfMines, difficulty = "medium") {
+export const startGame = function(size = config.medium.gridSize, nMines = config.medium.numOfMines, difficulty = "medium") {
     document.getElementById("header").innerHTML = "Sweep the Mines"
     settingsOn = false;
     if (size) {

@@ -1,4 +1,5 @@
-import { OPEN_CELL_BACKGROUND, config } from "./gameConfig.js"
+import { OPEN_CELL_BACKGROUND, config } from "./gameConfig.js";
+import { startGame } from './minesweeper.js';
 
 function isBottomNextBomb(id, bombs, gridSize){
   id = id + gridSize
